@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIRANI — Sistem Pelaporan Kekerasan Anak Berbasis AI | Portofolio Proyek</title>
+<meta name="description" content="SIRANI (Sistem Inovatif Pelaporan Kekerasan Anak) — chatbot empatik dengan deteksi emosi wajah real-time dan panel admin untuk menindaklanjuti laporan kekerasan anak.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-raised:#FFFFFF;
+    --surface:#FFFFFF;
+    --surface-2:#F4F4F4;
+    --line:#DDDDDD;
+    --line-soft:#EAEAEA;
+    --teal:#111111;
+    --teal-dim:#444444;
+    --amber:#5C5C5C;
+    --text:#111111;
+    --text-dim:#555555;
+    --text-faint:#8A8A8A;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: 'Poppins', -apple-system, sans-serif;
+    --radius: 10px;
+    --maxw: 780px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header.site{
+    position:sticky; top:0; z-index:30;
+    background:rgba(246,248,247,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  header.site .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:60px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:13px; color:var(--text-dim);}
+  .brand .mark{
+    width:26px; height:26px; border-radius:7px;
+    background:linear-gradient(155deg, var(--teal), var(--teal-dim));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:600; font-size:11px; color:#FFFFFF;
+  }
+  .brand b{color:var(--text); font-weight:600;}
+  .header-links{display:flex; gap:18px; font-size:13px;}
+  .header-links a{
+    color:var(--text-dim); text-decoration:none; border-bottom:1px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .header-links a:hover{color:var(--teal); border-color:var(--teal-dim);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px;}
+  .role-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px; letter-spacing:0.02em;
+    color:var(--teal); background:rgba(17,17,17,0.09);
+    border:1px solid rgba(17,17,17,0.28);
+    padding:5px 12px; border-radius:999px;
+    margin-bottom:22px;
+  }
+  .role-tag::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 3px rgba(17,17,17,0.18);}
+  h1{
+    font-size:clamp(30px, 5vw, 44px);
+    line-height:1.14;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    max-width:16ch;
+  }
+  .hero-sub{
+    margin-top:18px; color:var(--text-dim); font-size:16.5px; max-width:56ch;
+  }
+  .hero-sub b{color:var(--text); font-weight:600;}
+  .hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px;}
+  .btn{
+    font-family:var(--sans); font-size:14px; font-weight:600;
+    padding:11px 18px; border-radius:8px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{background:var(--teal); color:#FFFFFF;}
+  .btn-primary:hover{background:#333333;}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--teal-dim); color:var(--teal);}
+
+  .stat-row{
+    display:grid; grid-template-columns:repeat(3, 1fr);
+    gap:1px; background:var(--line-soft);
+    border:1px solid var(--line-soft); border-radius:var(--radius);
+    overflow:hidden; margin-top:46px;
+  }
+  .stat{background:var(--bg-raised); padding:18px 18px;}
+  .stat .n{font-family:var(--mono); font-size:22px; color:var(--teal); font-weight:600;}
+  .stat .l{font-size:12.5px; color:var(--text-faint); margin-top:4px;}
+
+  /* ---------- section shell ---------- */
+  section{padding:72px 0;}
+  section + section{border-top:1px solid var(--line-soft);}
+  .eyebrow{
+    font-family:var(--mono); font-size:12.5px; color:var(--text-faint);
+    display:flex; align-items:baseline; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow .num{color:var(--teal);}
+  h2{font-size:clamp(21px,3vw,26px); font-weight:700; letter-spacing:-0.005em; max-width:26ch;}
+  .lede{color:var(--text-dim); margin-top:10px; max-width:58ch; font-size:15px;}
+
+  /* ---------- feature / module list ---------- */
+  .endpoint-list{margin-top:32px; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .endpoint{
+    display:grid; grid-template-columns:auto 1fr; gap:4px 16px;
+    padding:16px 18px; background:var(--surface);
+  }
+  .endpoint + .endpoint{border-top:1px solid var(--line-soft);}
+  .endpoint .sig{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:13px;}
+  .method{
+    font-weight:700; font-size:11px; padding:3px 8px; border-radius:5px;
+    letter-spacing:0.02em;
+  }
+  .method.core{background:rgba(17,17,17,0.14); color:var(--teal);}
+  .method.ai{background:rgba(90,90,90,0.15); color:var(--amber);}
+  .route{color:var(--text); word-break:break-all;}
+  .desc{grid-column:1 / -1; color:var(--text-dim); font-size:13.5px; padding-left:0; margin-top:2px;}
+  @media (min-width:640px){
+    .endpoint{grid-template-columns:290px 1fr; align-items:center;}
+    .desc{grid-column:auto; padding-left:0;}
+  }
+
+  /* ---------- architecture flow ---------- */
+  .flow{margin-top:36px;}
+  .flow-diagram{width:100%; height:auto; display:block;}
+  .flow-caption{margin-top:14px; font-size:13px; color:var(--text-faint); font-family:var(--mono);}
+
+  /* ---------- schema ---------- */
+  .schema-wrap{margin-top:36px; overflow-x:auto;}
+  .schema-diagram{min-width:640px; width:100%; height:auto;}
+
+  /* ---------- AI pipeline ---------- */
+  .pipeline{margin-top:36px; display:flex; flex-direction:column;}
+  .pipe-step{display:grid; grid-template-columns:40px 1fr; gap:16px; position:relative; padding-bottom:32px;}
+  .pipe-step:last-child{padding-bottom:0;}
+  .pipe-step::before{
+    content:''; position:absolute; left:19px; top:38px; bottom:0; width:1px;
+    background:var(--line);
+  }
+  .pipe-step:last-child::before{display:none;}
+  .pipe-num{
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid var(--teal-dim); background:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:13px; color:var(--teal); font-weight:600;
+    z-index:1;
+  }
+  .pipe-body h3{font-size:15.5px; font-weight:600; margin-bottom:5px;}
+  .pipe-body p{color:var(--text-dim); font-size:14px; max-width:52ch;}
+
+  /* ---------- stack ---------- */
+  .stack-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:32px;}
+  .chip{
+    font-family:var(--mono); font-size:13px; color:var(--text);
+    border:1px solid var(--line); background:var(--surface);
+    padding:8px 14px; border-radius:7px;
+  }
+
+  /* ---------- highlights ---------- */
+  .highlight-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:32px;}
+  .hcard{
+    border:1px solid var(--line); background:var(--surface);
+    border-radius:var(--radius); padding:20px;
+  }
+  .hcard h3{font-size:15.5px; font-weight:600; color:var(--teal); margin-bottom:8px;}
+  .hcard p{font-size:13.8px; color:var(--text-dim);}
+  @media (max-width:600px){ .highlight-grid{grid-template-columns:1fr;} }
+
+  /* ---------- ethics note ---------- */
+  .note{
+    margin-top:32px; border:1px solid var(--line); border-left:3px solid var(--teal);
+    background:var(--surface-2); border-radius:0 var(--radius) var(--radius) 0;
+    padding:16px 20px; font-size:13.8px; color:var(--text-dim);
+  }
+  .note b{color:var(--text);}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    border-top:1px solid var(--line-soft);
+    padding:72px 0 90px; text-align:left;
+  }
+  .cta h2{max-width:none;}
+  .cta-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:24px;}
+
+  footer{
+    border-top:1px solid var(--line-soft); padding:28px 0 40px;
+    font-size:12.5px; color:var(--text-faint); font-family:var(--mono);
+  }
+  footer .wrap{display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:space-between;}
+  footer a{color:var(--text-dim); text-decoration:none;}
+  footer a:hover{color:var(--teal);}
+
+  ::selection{background:rgba(17,17,17,0.3);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand"><span class="mark">SI</span> SIRANI <span style="color:var(--text-faint)">/ pelaporan anak</span></div>
+    <nav class="header-links">
+      <a href="https://siranife.vercel.app/" target="_blank" rel="noopener">Live Demo</a>
+      <a href="https://siranife.vercel.app/chatbot_realtime.html" target="_blank" rel="noopener">Chatbot</a>
+      <!-- Ganti dengan link GitHub kamu -->
+      <a href="#" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <span class="role-tag">Proyek SIRANI · AI for Good</span>
+    <h1>Ruang aman bagi anak untuk melaporkan kekerasan</h1>
+    <p class="hero-sub">
+      <b>SIRANI (Sistem Inovatif Pelaporan Kekerasan Anak Berbasis AI)</b> adalah platform pelaporan
+      yang menggabungkan chatbot empatik dengan deteksi emosi wajah secara real-time lewat kamera,
+      supaya anak merasa didengar sebelum laporan diteruskan ke petugas melalui panel admin.
+      Halaman ini merangkum apa yang saya bangun: alur percakapan, deteksi emosi, skema data laporan, dan panel admin.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://siranife.vercel.app/" target="_blank" rel="noopener">Buka Live Demo ↗</a>
+      <a class="btn btn-ghost" href="https://siranife.vercel.app/chatbot_realtime.html" target="_blank" rel="noopener">Coba Chatbot</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="n">3</div><div class="l">modul inti: chatbot, deteksi emosi, admin</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">kategori emosi terdeteksi real-time</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">alur laporan otomatis ke petugas</div></div>
+    </div>
+  </section>
+
+  <!-- 02 — FITUR -->
+  <section id="fitur" class="wrap">
+    <div class="eyebrow"><span class="num">02</span><span>Fitur</span></div>
+    <h2>Modul yang saya bangun</h2>
+    <p class="lede">Empat modul utama yang membentuk pengalaman pelaporan, dari percakapan pertama sampai laporan sampai ke petugas.</p>
+
+    <div class="endpoint-list">
+      <div class="endpoint">
+        <div class="sig"><span class="method core">CORE</span><span class="route">Aman &amp; Anonim</span></div>
+        <div class="desc">Anak dapat bercerita tanpa perlu login atau mengisi identitas — mengurangi rasa takut di langkah pertama.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method core">CORE</span><span class="route">Chatbot Empatik Dua Arah</span></div>
+        <div class="desc">Percakapan real-time yang merespons dengan nada suportif, menuntun anak bercerita secara bertahap.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method ai">AI</span><span class="route">Deteksi Emosi Wajah Real-time</span></div>
+        <div class="desc">Kamera memantau ekspresi wajah selama sesi chat berlangsung, membantu sistem membaca kondisi emosional anak.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method ai">AI</span><span class="route">Meneruskan Laporan</span></div>
+        <div class="desc">Ringkasan percakapan dan indikasi emosi diteruskan sebagai laporan terstruktur, siap ditinjau petugas.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method core">CORE</span><span class="route">Panel Admin (Login)</span></div>
+        <div class="desc">Akses khusus petugas untuk meninjau, memverifikasi, dan menindaklanjuti laporan yang masuk.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — ARSITEKTUR -->
+  <section id="arsitektur" class="wrap">
+    <div class="eyebrow"><span class="num">03</span><span>Arsitektur</span></div>
+    <h2>Bagaimana satu sesi pelaporan mengalir</h2>
+    <p class="lede">Kamera dan chat berjalan berdampingan di sisi anak, lalu hasilnya masuk ke sistem sebagai satu laporan yang bisa ditinjau petugas.</p>
+
+    <div class="flow">
+      <svg class="flow-diagram" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#111111"/>
+          </marker>
+        </defs>
+        <!-- Anak / pengguna -->
+        <rect x="20" y="30" width="170" height="60" rx="8" fill="#FFFFFF" stroke="#D6D6D6"/>
+        <text x="105" y="55" text-anchor="middle" fill="#111111" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Anak</text>
+        <text x="105" y="72" text-anchor="middle" fill="#555555" font-family="Poppins, sans-serif" font-size="11">kamera + chat</text>
+
+        <!-- Chatbot realtime -->
+        <rect x="275" y="30" width="180" height="60" rx="8" fill="#F2F2F2" stroke="#111111" stroke-opacity="0.5"/>
+        <text x="365" y="52" text-anchor="middle" fill="#111111" font-family="ui-monospace, monospace" font-size="12" font-weight="600">Chatbot Realtime</text>
+        <text x="365" y="70" text-anchor="middle" fill="#555555" font-family="Poppins, sans-serif" font-size="10.5">teks + video stream</text>
+
+        <!-- Deteksi Emosi -->
+        <rect x="530" y="30" width="170" height="60" rx="8" fill="#FFFFFF" stroke="#D6D6D6"/>
+        <text x="615" y="55" text-anchor="middle" fill="#111111" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Deteksi Emosi</text>
+        <text x="615" y="72" text-anchor="middle" fill="#555555" font-family="Poppins, sans-serif" font-size="11">analisis wajah</text>
+
+        <!-- Sistem Laporan -->
+        <rect x="275" y="200" width="180" height="60" rx="8" fill="#FFFFFF" stroke="#D6D6D6"/>
+        <text x="365" y="225" text-anchor="middle" fill="#111111" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Sistem Laporan</text>
+        <text x="365" y="242" text-anchor="middle" fill="#555555" font-family="Poppins, sans-serif" font-size="11">database</text>
+
+        <!-- Panel Admin -->
+        <rect x="530" y="200" width="170" height="60" rx="8" fill="#F2F2F2" stroke="#5C5C5C" stroke-opacity="0.5"/>
+        <text x="615" y="225" text-anchor="middle" fill="#111111" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Panel Admin</text>
+        <text x="615" y="242" text-anchor="middle" fill="#555555" font-family="Poppins, sans-serif" font-size="11">petugas login</text>
+
+        <!-- arrows -->
+        <line x1="190" y1="60" x2="270" y2="60" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="455" y1="60" x2="525" y2="60" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="365" y1="95" x2="365" y2="195" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="455" y1="230" x2="525" y2="230" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <path d="M 615 95 C 615 150, 460 150, 370 195" stroke="#5C5C5C" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+        <text x="230" y="48" text-anchor="middle" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">pesan</text>
+        <text x="490" y="48" text-anchor="middle" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">stream wajah</text>
+        <text x="392" y="150" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">simpan laporan</text>
+        <text x="490" y="222" text-anchor="middle" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">tinjau</text>
+        <text x="470" y="140" fill="#5C5C5C" font-family="ui-monospace, monospace" font-size="9.5">label emosi</text>
+      </svg>
+      <p class="flow-caption">Alur: anak bercerita → emosi terbaca paralel → laporan tersimpan → petugas menindaklanjuti</p>
+    </div>
+  </section>
+
+  <!-- 04 — DATA -->
+  <section id="data" class="wrap">
+    <div class="eyebrow"><span class="num">04</span><span>Data</span></div>
+    <h2>Skema data laporan</h2>
+    <p class="lede">Inti skema yang menghubungkan satu sesi chat dengan jejak emosi yang terdeteksi dan status tindak lanjut petugas.</p>
+
+    <div class="schema-wrap">
+      <svg class="schema-diagram" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="rel" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L8,4 L0,8 z" fill="#8A8A8A"/>
+          </marker>
+        </defs>
+
+        <!-- SESSIONS (center-left) -->
+        <g>
+          <rect x="20" y="150" width="190" height="120" rx="6" fill="#F2F2F2" stroke="#111111" stroke-opacity="0.55"/>
+          <rect x="20" y="150" width="190" height="28" rx="6" fill="#1A1A1A"/>
+          <text x="115" y="169" text-anchor="middle" fill="#FFFFFF" font-family="ui-monospace, monospace" font-size="12" font-weight="600">SESSIONS</text>
+          <text x="34" y="198" fill="#111111" font-family="ui-monospace, monospace" font-size="10.5">id · PK</text>
+          <text x="34" y="216" fill="#555555" font-family="ui-monospace, monospace" font-size="10.5">started_at</text>
+          <text x="34" y="234" fill="#555555" font-family="ui-monospace, monospace" font-size="10.5">status</text>
+          <text x="34" y="252" fill="#555555" font-family="ui-monospace, monospace" font-size="10.5">is_anonymous</text>
+        </g>
+
+        <!-- CHAT_LOGS -->
+        <g>
+          <rect x="330" y="20" width="200" height="112" rx="6" fill="#FFFFFF" stroke="#D6D6D6"/>
+          <rect x="330" y="20" width="200" height="26" rx="6" fill="#EBEBEB"/>
+          <text x="430" y="38" text-anchor="middle" fill="#111111" font-family="ui-monospace, monospace" font-size="11.5" font-weight="600">CHAT_LOGS</text>
+          <text x="344" y="65" fill="#111111" font-family="ui-monospace, monospace" font-size="10">id · PK</text>
+          <text x="344" y="82" fill="#555555" font-family="ui-monospace, monospace" font-size="10">session_id · FK</text>
+          <text x="344" y="99" fill="#555555" font-family="ui-monospace, monospace" font-size="10">sender</text>
+          <text x="344" y="116" fill="#555555" font-family="ui-monospace, monospace" font-size="10">message</text>
+        </g>
+
+        <!-- EMOTION_LOGS -->
+        <g>
+          <rect x="330" y="152" width="200" height="112" rx="6" fill="#FFFFFF" stroke="#D6D6D6"/>
+          <rect x="330" y="152" width="200" height="26" rx="6" fill="#EBEBEB"/>
+          <text x="430" y="170" text-anchor="middle" fill="#111111" font-family="ui-monospace, monospace" font-size="11.5" font-weight="600">EMOTION_LOGS</text>
+          <text x="344" y="197" fill="#111111" font-family="ui-monospace, monospace" font-size="10">id · PK</text>
+          <text x="344" y="214" fill="#555555" font-family="ui-monospace, monospace" font-size="10">session_id · FK</text>
+          <text x="344" y="231" fill="#555555" font-family="ui-monospace, monospace" font-size="10">emotion_label</text>
+          <text x="344" y="248" fill="#555555" font-family="ui-monospace, monospace" font-size="10">confidence</text>
+        </g>
+
+        <!-- REPORTS -->
+        <g>
+          <rect x="330" y="284" width="200" height="120" rx="6" fill="#FFFFFF" stroke="#D6D6D6"/>
+          <rect x="330" y="284" width="200" height="26" rx="6" fill="#EBEBEB"/>
+          <text x="430" y="302" text-anchor="middle" fill="#111111" font-family="ui-monospace, monospace" font-size="11.5" font-weight="600">REPORTS</text>
+          <text x="344" y="329" fill="#111111" font-family="ui-monospace, monospace" font-size="10">id · PK</text>
+          <text x="344" y="346" fill="#555555" font-family="ui-monospace, monospace" font-size="10">session_id · FK</text>
+          <text x="344" y="363" fill="#555555" font-family="ui-monospace, monospace" font-size="10">summary</text>
+          <text x="344" y="380" fill="#555555" font-family="ui-monospace, monospace" font-size="10">status</text>
+        </g>
+
+        <!-- ADMIN_USERS -->
+        <g>
+          <rect x="650" y="152" width="220" height="112" rx="6" fill="#F2F2F2" stroke="#5C5C5C" stroke-opacity="0.5"/>
+          <rect x="650" y="152" width="220" height="26" rx="6" fill="#EBEBEB"/>
+          <text x="760" y="170" text-anchor="middle" fill="#5C5C5C" font-family="ui-monospace, monospace" font-size="11.5" font-weight="600">ADMIN_USERS</text>
+          <text x="664" y="197" fill="#111111" font-family="ui-monospace, monospace" font-size="10">id · PK</text>
+          <text x="664" y="214" fill="#555555" font-family="ui-monospace, monospace" font-size="10">username</text>
+          <text x="664" y="231" fill="#555555" font-family="ui-monospace, monospace" font-size="10">reviewed_report_id · FK</text>
+          <text x="664" y="248" fill="#555555" font-family="ui-monospace, monospace" font-size="10">last_login</text>
+        </g>
+
+        <!-- relations -->
+        <path d="M210,190 C270,150 270,90 325,76" stroke="#8A8A8A" stroke-width="1.3" fill="none" marker-end="url(#rel)"/>
+        <text x="245" y="120" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">berisi</text>
+
+        <path d="M210,205 L325,205" stroke="#8A8A8A" stroke-width="1.3" fill="none" marker-end="url(#rel)"/>
+        <text x="248" y="198" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">merekam</text>
+
+        <path d="M210,225 C270,270 270,330 325,340" stroke="#8A8A8A" stroke-width="1.3" fill="none" marker-end="url(#rel)"/>
+        <text x="240" y="290" fill="#8A8A8A" font-family="ui-monospace, monospace" font-size="9.5">menghasilkan</text>
+
+        <path d="M210,215 C450,215 560,208 645,208" stroke="#5C5C5C" stroke-width="1.3" fill="none" marker-end="url(#rel)"/>
+        <text x="560" y="200" fill="#5C5C5C" font-family="ui-monospace, monospace" font-size="9.5">ditinjau oleh</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 05 — INTEGRASI AI -->
+  <section id="integrasi-ai" class="wrap">
+    <div class="eyebrow"><span class="num">05</span><span>Integrasi AI</span></div>
+    <h2>Dari kamera anak sampai laporan siap tinjau</h2>
+    <p class="lede">Lima langkah dari sesi chat dibuka sampai laporan sampai ke meja petugas.</p>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">1</div>
+        <div class="pipe-body">
+          <h3>Buka sesi chat secara anonim</h3>
+          <p>Anak membuka chatbot tanpa perlu membuat akun; sistem meminta izin akses kamera untuk pemantauan emosi.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">2</div>
+        <div class="pipe-body">
+          <h3>Pantau ekspresi wajah real-time</h3>
+          <p>Selama percakapan berlangsung, model deteksi emosi membaca ekspresi wajah dari stream kamera secara berkala.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">3</div>
+        <div class="pipe-body">
+          <h3>Chatbot merespons secara empatik</h3>
+          <p>Setiap pesan anak dijawab dengan nada yang menenangkan, mendorong cerita berlanjut tanpa terasa menginterogasi.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">4</div>
+        <div class="pipe-body">
+          <h3>Susun ringkasan laporan</h3>
+          <p>Isi percakapan dan pola emosi yang terekam digabung menjadi satu ringkasan laporan terstruktur.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">5</div>
+        <div class="pipe-body">
+          <h3>Teruskan ke panel admin</h3>
+          <p>Laporan masuk ke antrean petugas yang login di panel admin untuk diverifikasi dan ditindaklanjuti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — TEKNOLOGI -->
+  <section id="teknologi" class="wrap">
+    <div class="eyebrow"><span class="num">06</span><span>Teknologi</span></div>
+    <h2>Stack yang saya pakai</h2>
+    <p class="lede">Daftar berikut disusun dari apa yang terlihat di produk — sesuaikan dengan stack asli kamu sebelum dipublikasikan.</p>
+    <div class="stack-row">
+      <span class="chip">HTML / CSS / JavaScript</span>
+      <span class="chip">Deteksi Emosi Wajah (real-time)</span>
+      <span class="chip">Chatbot AI</span>
+      <span class="chip">Autentikasi Admin</span>
+      <span class="chip">Database Laporan</span>
+      <span class="chip">Vercel</span>
+    </div>
+  </section>
+
+  <!-- 07 — SOROTAN -->
+  <section id="sorotan" class="wrap">
+    <div class="eyebrow"><span class="num">07</span><span>Sorotan</span></div>
+    <h2>Yang saya bawa ke proyek ini</h2>
+
+    <div class="highlight-grid">
+      <div class="hcard">
+        <h3>Aman & anonim sejak awal</h3>
+        <p>Tidak ada hambatan login di sisi anak — mengurangi rasa takut di langkah pertama untuk bercerita.</p>
+      </div>
+      <div class="hcard">
+        <h3>Deteksi emosi paralel</h3>
+        <p>Kamera dan chat berjalan bersamaan, memberi konteks emosional yang tidak tertangkap dari teks saja.</p>
+      </div>
+      <div class="hcard">
+        <h3>Chatbot yang mendengarkan</h3>
+        <p>Alur percakapan dirancang untuk menuntun cerita secara bertahap, bukan menodongkan pertanyaan.</p>
+      </div>
+      <div class="hcard">
+        <h3>Laporan siap tindak lanjut</h3>
+        <p>Panel admin memberi petugas ringkasan yang jelas sehingga respons ke anak bisa lebih cepat.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Catatan etika:</b> karena SIRANI menangani data sensitif anak, pastikan halaman deskripsi ini tidak menampilkan
+      cuplikan percakapan nyata, foto wajah pengguna, atau kredensial admin — cukup jelaskan alurnya secara umum.
+    </div>
+  </section>
+
+  <section class="cta wrap">
+    <h2>Lihat platform secara langsung</h2>
+    <p class="lede">Seluruh modul SIRANI — chatbot, deteksi emosi, dan panel admin yang dijelaskan di halaman ini — dapat diakses melalui deployment di siranife.vercel.app.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="https://siranife.vercel.app/" target="_blank" rel="noopener">Buka siranife.vercel.app ↗</a>
+      <a class="btn btn-ghost" href="https://siranife.vercel.app/chatbot_realtime.html" target="_blank" rel="noopener">Coba Chatbot ↗</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 SIRANI — Sistem Inovatif Pelaporan Kekerasan Anak Berbasis AI</span>
+    <span><a href="https://siranife.vercel.app/" target="_blank" rel="noopener">siranife.vercel.app</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
