@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laundry POS — Order &amp; Manajemen Laundry Online</title>
+<meta name="description" content="Laundry POS — platform pemesanan jasa laundry online dengan peran Admin dan Pelanggan, pembayaran QRIS, transfer bank, atau tunai, lengkap dengan invoice.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-raised:#FFFFFF;
+    --surface:#FFFFFF;
+    --surface-2:#F4F4F4;
+    --line:#DDDDDD;
+    --line-soft:#EAEAEA;
+    --teal:#111111;
+    --teal-dim:#444444;
+    --amber:#5C5C5C;
+    --text:#111111;
+    --text-dim:#555555;
+    --text-faint:#8A8A8A;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: 'Poppins', -apple-system, sans-serif;
+    --radius: 10px;
+    --maxw: 780px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header.site{
+    position:sticky; top:0; z-index:30;
+    background:rgba(246,250,250,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  header.site .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:60px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:13px; color:var(--text-dim);}
+  .brand .mark{
+    width:26px; height:26px; border-radius:7px;
+    background:linear-gradient(155deg, var(--teal), var(--teal-dim));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:600; font-size:11px; color:#FFFFFF;
+  }
+  .brand b{color:var(--text); font-weight:600;}
+  .header-links{display:flex; gap:18px; font-size:13px;}
+  .header-links a{
+    color:var(--text-dim); text-decoration:none; border-bottom:1px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .header-links a:hover{color:var(--teal); border-color:var(--teal-dim);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px;}
+  .role-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px; letter-spacing:0.02em;
+    color:var(--teal); background:rgba(17,17,17,0.09);
+    border:1px solid rgba(17,17,17,0.28);
+    padding:5px 12px; border-radius:999px;
+    margin-bottom:22px;
+  }
+  .role-tag::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 3px rgba(17,17,17,0.18);}
+  h1{
+    font-size:clamp(30px, 5vw, 44px);
+    line-height:1.14;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    max-width:17ch;
+  }
+  .hero-sub{
+    margin-top:18px; color:var(--text-dim); font-size:16.5px; max-width:58ch;
+  }
+  .hero-sub b{color:var(--text); font-weight:600;}
+  .hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px;}
+  .btn{
+    font-family:var(--sans); font-size:14px; font-weight:600;
+    padding:11px 18px; border-radius:8px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{background:var(--teal); color:#FFFFFF;}
+  .btn-primary:hover{background:#0A5158;}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--teal-dim); color:var(--teal);}
+
+  .stat-row{
+    display:grid; grid-template-columns:repeat(3, 1fr);
+    gap:1px; background:var(--line-soft);
+    border:1px solid var(--line-soft); border-radius:var(--radius);
+    overflow:hidden; margin-top:46px;
+  }
+  .stat{background:var(--bg-raised); padding:18px 18px;}
+  .stat .n{font-family:var(--mono); font-size:22px; color:var(--teal); font-weight:600;}
+  .stat .l{font-size:12.5px; color:var(--text-faint); margin-top:4px;}
+
+  /* ---------- section shell ---------- */
+  section{padding:72px 0;}
+  section + section{border-top:1px solid var(--line-soft);}
+  .eyebrow{
+    font-family:var(--mono); font-size:12.5px; color:var(--text-faint);
+    display:flex; align-items:baseline; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow .num{color:var(--teal);}
+  h2{font-size:clamp(21px,3vw,26px); font-weight:700; letter-spacing:-0.005em; max-width:26ch;}
+  .lede{color:var(--text-dim); margin-top:10px; max-width:58ch; font-size:15px;}
+
+  /* ---------- landing feature cards ---------- */
+  .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:32px;}
+  .fcard{border:1px solid var(--line); background:var(--surface); border-radius:var(--radius); padding:20px;}
+  .fcard h3{font-size:15px; font-weight:600; color:var(--teal); margin-bottom:8px;}
+  .fcard p{font-size:13.5px; color:var(--text-dim);}
+  @media (max-width:680px){ .feature-grid{grid-template-columns:1fr;} }
+
+  /* ---------- role / endpoint style list ---------- */
+  .endpoint-list{margin-top:32px; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .endpoint{
+    display:grid; grid-template-columns:auto 1fr; gap:4px 16px;
+    padding:16px 18px; background:var(--surface);
+  }
+  .endpoint + .endpoint{border-top:1px solid var(--line-soft);}
+  .endpoint .sig{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:13px;}
+  .method{
+    font-weight:700; font-size:11px; padding:3px 8px; border-radius:5px;
+    letter-spacing:0.02em;
+  }
+  .method.user{background:rgba(17,17,17,0.14); color:var(--teal);}
+  .method.admin{background:rgba(90,90,90,0.15); color:var(--amber);}
+  .route{color:var(--text); word-break:break-word;}
+  .desc{grid-column:1 / -1; color:var(--text-dim); font-size:13.5px; padding-left:0; margin-top:2px;}
+  @media (min-width:640px){
+    .endpoint{grid-template-columns:230px 1fr; align-items:center;}
+    .desc{grid-column:auto; padding-left:0;}
+  }
+  .role-heading{
+    font-family:var(--mono); font-size:12px; color:var(--text-faint);
+    margin-top:28px; margin-bottom:0; letter-spacing:0.02em;
+  }
+  .role-heading:first-of-type{margin-top:32px;}
+
+  /* ---------- architecture flow ---------- */
+  .flow{margin-top:36px;}
+  .flow-diagram{width:100%; height:auto; display:block;}
+  .flow-caption{margin-top:14px; font-size:13px; color:var(--text-faint); font-family:var(--mono);}
+
+  /* ---------- pipeline ---------- */
+  .pipeline{margin-top:36px; display:flex; flex-direction:column;}
+  .pipe-step{display:grid; grid-template-columns:40px 1fr; gap:16px; position:relative; padding-bottom:32px;}
+  .pipe-step:last-child{padding-bottom:0;}
+  .pipe-step::before{
+    content:''; position:absolute; left:19px; top:38px; bottom:0; width:1px;
+    background:var(--line);
+  }
+  .pipe-step:last-child::before{display:none;}
+  .pipe-num{
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid var(--teal-dim); background:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:13px; color:var(--teal); font-weight:600;
+    z-index:1;
+  }
+  .pipe-body h3{font-size:15.5px; font-weight:600; margin-bottom:5px;}
+  .pipe-body p{color:var(--text-dim); font-size:14px; max-width:52ch;}
+
+  /* ---------- stack ---------- */
+  .stack-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:32px;}
+  .chip{
+    font-family:var(--mono); font-size:13px; color:var(--text);
+    border:1px solid var(--line); background:var(--surface);
+    padding:8px 14px; border-radius:7px;
+  }
+
+  /* ---------- highlights ---------- */
+  .highlight-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:32px;}
+  .hcard{
+    border:1px solid var(--line); background:var(--surface);
+    border-radius:var(--radius); padding:20px;
+  }
+  .hcard h3{font-size:15.5px; font-weight:600; color:var(--teal); margin-bottom:8px;}
+  .hcard p{font-size:13.8px; color:var(--text-dim);}
+  @media (max-width:600px){ .highlight-grid{grid-template-columns:1fr;} }
+
+  /* ---------- CTA ---------- */
+  .cta{
+    border-top:1px solid var(--line-soft);
+    padding:72px 0 90px; text-align:left;
+  }
+  .cta h2{max-width:none;}
+  .cta-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:24px;}
+
+  footer{
+    border-top:1px solid var(--line-soft); padding:28px 0 40px;
+    font-size:12.5px; color:var(--text-faint); font-family:var(--mono);
+  }
+  footer .wrap{display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:space-between;}
+  footer a{color:var(--text-dim); text-decoration:none;}
+  footer a:hover{color:var(--teal);}
+
+  ::selection{background:rgba(17,17,17,0.3);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand"><span class="mark">LP</span> Laundry POS <span style="color:var(--text-faint)">/ order &amp; manajemen</span></div>
+    <nav class="header-links">
+      <a href="https://proyek3-pos.github.io/laundrypos-fe/" target="_blank" rel="noopener">Live Demo</a>
+      <a href="https://github.com/muhammadraflialfarisi" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <span class="role-tag">Proyek Tim · Laundry POS</span>
+    <h1>Laundry POS, pesan dan kelola jasa laundry dari satu platform</h1>
+    <p class="hero-sub">
+      Laundry POS adalah aplikasi web yang menghubungkan <b>pelanggan</b> dan usaha laundry secara online.
+      Pelanggan bisa memilih layanan laundry yang diinginkan lalu membayar lewat <b>QRIS, transfer bank, atau tunai</b>,
+      dan menerima <b>invoice</b> sebagai bukti bayar sekaligus syarat pengambilan laundry saat sudah selesai,
+      sementara <b>admin</b> mengelola pencatatan keuangan, hak akses (role), dan data pelanggan dari sisi belakang.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://proyek3-pos.github.io/laundrypos-fe/" target="_blank" rel="noopener">Buka Live Demo ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/muhammadraflialfarisi" target="_blank" rel="noopener">Profil GitHub</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="n">2</div><div class="l">peran pengguna — admin &amp; pelanggan</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">metode bayar — QRIS, transfer bank &amp; tunai</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">dashboard admin terpusat</div></div>
+    </div>
+  </section>
+
+  <!-- 02 — FITUR UNGGULAN -->
+  <section id="fitur" class="wrap">
+    <div class="eyebrow"><span class="num">02</span><span>Fitur Unggulan</span></div>
+    <h2>Yang ditawarkan ke pengunjung sejak halaman utama</h2>
+    <p class="lede">Landing page Laundry POS memperkenalkan tiga nilai utama sebelum pengguna mendaftar atau login.</p>
+
+    <div class="feature-grid">
+      <div class="fcard">
+        <h3>Kemudahan Penggunaan</h3>
+        <p>Tampilan POS yang sederhana dan intuitif, sehingga pelanggan maupun admin tidak butuh waktu lama untuk terbiasa.</p>
+      </div>
+      <div class="fcard">
+        <h3>Keamanan Data</h3>
+        <p>Data transaksi dan pelanggan disimpan dengan mekanisme yang aman, meminimalkan risiko kebocoran informasi.</p>
+      </div>
+      <div class="fcard">
+        <h3>Analisis Bisnis</h3>
+        <p>Ringkasan aktivitas transaksi membantu pemilik laundry mengambil keputusan bisnis sehari-hari.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — PERAN PENGGUNA -->
+  <section id="peran" class="wrap">
+    <div class="eyebrow"><span class="num">03</span><span>Peran Pengguna</span></div>
+    <h2>Dua peran, dua tanggung jawab berbeda</h2>
+    <p class="lede">Sistem membedakan akses antara pelanggan yang memesan dan admin yang mengelola operasional laundry.</p>
+
+    <p class="role-heading">Pelanggan (User)</p>
+    <div class="endpoint-list">
+      <div class="endpoint">
+        <div class="sig"><span class="method user">USER</span><span class="route">Daftar &amp; login</span></div>
+        <div class="desc">Membuat akun sendiri lalu masuk untuk mulai memesan layanan laundry.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method user">USER</span><span class="route">Order layanan laundry</span></div>
+        <div class="desc">Memilih jenis layanan laundry yang diinginkan sesuai kebutuhan cucian.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method user">USER</span><span class="route">Pembayaran</span></div>
+        <div class="desc">Menyelesaikan transaksi lewat QRIS, transfer bank, atau tunai sesuai kenyamanan pelanggan.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method user">USER</span><span class="route">Invoice pesanan</span></div>
+        <div class="desc">Menerima invoice setelah pembayaran lunas, sebagai bukti bayar sekaligus syarat pengambilan laundry saat sudah siap.</div>
+      </div>
+    </div>
+
+    <p class="role-heading">Admin</p>
+    <div class="endpoint-list">
+      <div class="endpoint">
+        <div class="sig"><span class="method admin">ADMIN</span><span class="route">Pencatatan keuangan</span></div>
+        <div class="desc">Merekam dan memantau arus transaksi masuk dari setiap pesanan pelanggan.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method admin">ADMIN</span><span class="route">Manajemen role</span></div>
+        <div class="desc">Mengatur hak akses pengguna lain yang bekerja di dalam sistem.</div>
+      </div>
+      <div class="endpoint">
+        <div class="sig"><span class="method admin">ADMIN</span><span class="route">Data pelanggan</span></div>
+        <div class="desc">Melihat dan mengelola daftar pelanggan yang terdaftar di platform.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — ALUR SISTEM -->
+  <section id="alur-sistem" class="wrap">
+    <div class="eyebrow"><span class="num">04</span><span>Alur Sistem</span></div>
+    <h2>Bagaimana pesanan dan pembayaran mengalir</h2>
+    <p class="lede">Pelanggan memesan lewat frontend, pembayaran bisa lewat QRIS, transfer bank, maupun tunai, dan setelah lunas invoice terbit kembali ke pelanggan sebagai bukti bayar.</p>
+
+    <div class="flow">
+      <svg class="flow-diagram" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#111111"/>
+          </marker>
+        </defs>
+        <!-- Pelanggan -->
+        <rect x="20" y="30" width="170" height="60" rx="8" fill="#FFFFFF" stroke="#D6DEDF"/>
+        <text x="105" y="55" text-anchor="middle" fill="#101B1C" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Pelanggan</text>
+        <text x="105" y="72" text-anchor="middle" fill="#516266" font-family="Poppins, sans-serif" font-size="11">membuka website</text>
+
+        <!-- Website Laundry POS -->
+        <rect x="275" y="30" width="180" height="60" rx="8" fill="#F2F2F2" stroke="#111111" stroke-opacity="0.5"/>
+        <text x="365" y="52" text-anchor="middle" fill="#111111" font-family="ui-monospace, monospace" font-size="12" font-weight="600">Laundry POS</text>
+        <text x="365" y="70" text-anchor="middle" fill="#516266" font-family="Poppins, sans-serif" font-size="10.5">web app (frontend)</text>
+
+        <!-- Pembayaran -->
+        <rect x="530" y="30" width="170" height="60" rx="8" fill="#FFFFFF" stroke="#D6DEDF"/>
+        <text x="615" y="55" text-anchor="middle" fill="#101B1C" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Pembayaran</text>
+        <text x="615" y="72" text-anchor="middle" fill="#516266" font-family="Poppins, sans-serif" font-size="11">QRIS / transfer / tunai</text>
+
+        <!-- Dashboard Admin -->
+        <rect x="275" y="200" width="180" height="60" rx="8" fill="#FFFFFF" stroke="#D6DEDF"/>
+        <text x="365" y="225" text-anchor="middle" fill="#101B1C" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Dashboard Admin</text>
+        <text x="365" y="242" text-anchor="middle" fill="#516266" font-family="Poppins, sans-serif" font-size="11">keuangan, role, pelanggan</text>
+
+        <!-- arrows -->
+        <line x1="190" y1="60" x2="270" y2="60" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="455" y1="60" x2="525" y2="60" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="365" y1="95" x2="365" y2="195" stroke="#111111" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <path d="M 615 95 C 615 150, 460 150, 370 195" stroke="#5C5C5C" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 275 215 C 130 240, 60 160, 95 95" stroke="#5C5C5C" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow)"/>
+
+        <text x="230" y="48" text-anchor="middle" fill="#8EA1A4" font-family="ui-monospace, monospace" font-size="9.5">pesan</text>
+        <text x="490" y="48" text-anchor="middle" fill="#8EA1A4" font-family="ui-monospace, monospace" font-size="9.5">checkout</text>
+        <text x="392" y="150" fill="#8EA1A4" font-family="ui-monospace, monospace" font-size="9.5">order &amp; data</text>
+        <text x="470" y="140" fill="#5C5C5C" font-family="ui-monospace, monospace" font-size="9.5">konfirmasi bayar</text>
+        <text x="120" y="175" fill="#5C5C5C" font-family="ui-monospace, monospace" font-size="9.5">invoice terbit</text>
+      </svg>
+      <p class="flow-caption">Alur: pelanggan memesan → checkout &amp; bayar (QRIS / transfer / tunai) → konfirmasi masuk ke admin → invoice terbit ke pelanggan</p>
+    </div>
+  </section>
+
+  <!-- 05 — ALUR TRANSAKSI -->
+  <section id="alur-transaksi" class="wrap">
+    <div class="eyebrow"><span class="num">05</span><span>Alur Transaksi</span></div>
+    <h2>Dari pilih layanan sampai laundry diambil</h2>
+    <p class="lede">Lima langkah dari sisi pelanggan memesan sampai laundry selesai diambil.</p>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">1</div>
+        <div class="pipe-body">
+          <h3>Pilih layanan laundry</h3>
+          <p>Pelanggan memilih jenis layanan laundry yang sesuai dengan kebutuhan cuciannya.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">2</div>
+        <div class="pipe-body">
+          <h3>Checkout &amp; pilih metode bayar</h3>
+          <p>Pelanggan menyelesaikan pesanan dan memilih membayar lewat QRIS, transfer bank, atau tunai.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">3</div>
+        <div class="pipe-body">
+          <h3>Pembayaran terkonfirmasi</h3>
+          <p>Transaksi yang masuk tercatat di sisi admin sebagai bagian dari pembukuan.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">4</div>
+        <div class="pipe-body">
+          <h3>Invoice terbit</h3>
+          <p>Setelah lunas, pelanggan menerima invoice sebagai bukti bayar sekaligus syarat pengambilan laundry.</p>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">5</div>
+        <div class="pipe-body">
+          <h3>Laundry diambil</h3>
+          <p>Pelanggan menunjukkan invoice saat cucian sudah siap untuk diambil di lokasi laundry.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — TEKNOLOGI -->
+  <section id="teknologi" class="wrap">
+    <div class="eyebrow"><span class="num">06</span><span>Teknologi</span></div>
+    <h2>Stack yang dipakai di sisi frontend</h2>
+    <div class="stack-row">
+      <span class="chip">HTML</span>
+      <span class="chip">CSS</span>
+      <span class="chip">JavaScript</span>
+      <span class="chip">Bootstrap / MDB</span>
+      <span class="chip">QRIS</span>
+      <span class="chip">Transfer Bank</span>
+      <span class="chip">Tunai</span>
+      <span class="chip">Invoice</span>
+      <span class="chip">GitHub Pages</span>
+    </div>
+  </section>
+
+  <!-- 07 — SOROTAN -->
+  <section id="sorotan" class="wrap">
+    <div class="eyebrow"><span class="num">07</span><span>Sorotan</span></div>
+    <h2>Yang membedakan Laundry POS</h2>
+
+    <div class="highlight-grid">
+      <div class="hcard">
+        <h3>Dua peran, satu platform</h3>
+        <p>Pelanggan dan admin memakai satu sistem yang sama, masing-masing dengan akses sesuai perannya.</p>
+      </div>
+      <div class="hcard">
+        <h3>Metode bayar fleksibel</h3>
+        <p>Pelanggan bebas memilih QRIS, transfer bank, atau tunai — sesuai kenyamanan masing-masing.</p>
+      </div>
+      <div class="hcard">
+        <h3>Invoice sebagai bukti</h3>
+        <p>Setiap pembayaran lunas menghasilkan invoice, jadi bukti bayar sekaligus syarat pengambilan laundry.</p>
+      </div>
+      <div class="hcard">
+        <h3>Data pelanggan terpusat</h3>
+        <p>Admin punya satu tempat untuk melihat siapa saja pelanggan yang aktif menggunakan layanan.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta wrap">
+    <h2>Coba platformnya secara langsung</h2>
+    <p class="lede">Seluruh alur order dan pembayaran yang dijelaskan di halaman ini bisa dicoba lewat demo yang sudah di-hosting.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="https://proyek3-pos.github.io/laundrypos-fe/" target="_blank" rel="noopener">Buka Live Demo ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/muhammadraflialfarisi" target="_blank" rel="noopener">Profil GitHub ↗</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Laundry POS — Order &amp; Manajemen Laundry Online</span>
+    <span><a href="https://proyek3-pos.github.io/laundrypos-fe/" target="_blank" rel="noopener">Live Demo</a> · <a href="https://github.com/muhammadraflialfarisi" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
